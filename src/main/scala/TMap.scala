@@ -16,8 +16,8 @@ class TMap[+T] private(private val values: List[(Type, Any)]) {
   Concatenate two TMaps.
   Elements of the left one override 
   */
-  def ++[S](other: TMap[S])
-    = new TMap[T with S](other.values ++ values)
+  def ++[S](other: TMap[S])(implicit tt: TypeTag[S])
+    = new TMap[T with S](other.values ++ values.filterNot(_._1 <:< tt.tpe))
 
   override def toString = "TMap("+values.toString+")"
 }
